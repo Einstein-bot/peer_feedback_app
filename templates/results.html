@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+</head>
+<body>
+    <h1>Results</h1>
+    <table border="1">
+        <tr>
+            <th>Participant</th>
+            <th>Communicate</th>
+            <th>Hustle</th>
+            <th>Ownership</th>
+            <th>Improve</th>
+            <th>Conscientious</th>
+            <th>Attitudes</th>
+            <th>Support</th>
+            <th>Get It</th>
+            <th>Want It</th>
+            <th>Capacity</th>
+        </tr>
+        {% for participant, feedback in feedback_data.items() %}
+        <tr>
+            <td>{{ participant }}</td>
+            <td>{{ feedback['Communicate'] }}</td>
+            <td>{{ feedback['Hustle'] }}</td>
+            <td>{{ feedback['Ownership'] }}</td>
+            <td>{{ feedback['Improve'] }}</td>
+            <td>{{ feedback['Conscientious'] }}</td>
+            <td>{{ feedback['Attitudes'] }}</td>
+            <td>{{ feedback['Support'] }}</td>
+            <td>{{ feedback['Get It'] }}</td>
+            <td>{{ feedback['Want It'] }}</td>
+            <td>{{ feedback['Capacity'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{{ url_for('export_results') }}">Download Results as CSV</a>
+</body>
+</html>

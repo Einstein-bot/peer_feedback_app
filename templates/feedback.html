@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback for {{ participant }}</title>
+</head>
+<body>
+    <h1>Submit Feedback for {{ participant }}</h1>
+    <form method="POST">
+        <label>Communicate: </label>
+        <select name="communicate">
+            <option value="+">+</option>
+            <option value="+/-">+/-</option>
+            <option value="-">-</option>
+        </select><br><br>
+
+        <!-- Repeat for other core values -->
+        <label>Hustle: </label>
+        <select name="hustle">
+            <option value="+">+</option>
+            <option value="+/-">+/-</option>
+            <option value="-">-</option>
+        </select><br><br>
+
+        <!-- Add all the core value dropdowns -->
+
+        <label>Get It: </label>
+        <input type="checkbox" name="get_it"><br><br>
+        
+        <label>Want It: </label>
+        <input type="checkbox" name="want_it"><br><br>
+
+        <label>Capacity: </label>
+        <input type="checkbox" name="capacity"><br><br>
+
+        <button type="submit">Submit Feedback</button>
+    </form>
+</body>
+</html>

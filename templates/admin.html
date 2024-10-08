@@ -24,6 +24,13 @@
             <p>Share this link with participants: <a href="{{ session_link }}" target="_blank">{{ session_link }}</a></p>
         {% endif %}
 
+        {% if session_id %}
+            <h2>Results</h2>
+            <p>View aggregated results: <a href="{{ url_for('results', session_id=session_id) }}" target="_blank">Results Page</a></p>
+            <br>
+            <a href="{{ url_for('export_results', session_id=session_id) }}" class="btn btn-primary">Export Results as CSV</a>
+        {% endif %}
+
         <h2>Participants List:</h2>
         <ul id="participant-list">
             {% for participant in participants %}
@@ -33,11 +40,6 @@
 
         <h2>Live Feedback Updates:</h2>
         <div id="live-feedback"></div>
-
-        {% if session_id %}
-            <br>
-            <a href="{{ url_for('export_results', session_id=session_id) }}" class="btn btn-primary">Export Results as CSV</a>
-        {% endif %}
     </div>
 
     <!-- JavaScript to Handle Real-Time Updates -->
@@ -48,7 +50,7 @@
         socket.on('connect', function() {
             console.log("Connected to the server");
             // Join the admin room to receive updates
-            var session_id = "{{ request.args.get('session_id') }}";
+            var session_id = "{{ session_id }}";
             if (session_id) {
                 socket.emit('join', {room: session_id, username: 'Admin'});
             }
@@ -63,16 +65,16 @@
                     <div class="card-body">
                         <h5 class="card-title">Feedback for ${data.participant}</h5>
                         <ul>
-                            <li>Communicate: ${data.feedback.Communicate}</li>
-                            <li>Hustle: ${data.feedback.Hustle}</li>
-                            <li>Ownership: ${data.feedback.Ownership}</li>
-                            <li>Improve: ${data.feedback.Improve}</li>
-                            <li>Conscientious: ${data.feedback.Conscientious}</li>
-                            <li>Attitudes: ${data.feedback.Attitudes}</li>
-                            <li>Support: ${data.feedback.Support}</li>
+                            <li>Communicate clearly, professionally, and with kindness: ${data.feedback["Communicate clearly, professionally, and with kindness."]}</li>
+                            <li>Hustle but don't rush: ${data.feedback["Hustle but don't rush."]}</li>
+                            <li>Ownership over results: ${data.feedback["Ownership over results."]}</li>
+                            <li>Improve everyday with enthusiasm: ${data.feedback["Improve everyday with enthusiasm."]}</li>
+                            <li>Conscientious attention to detail: ${data.feedback["Conscientious attention to detail."]}</li>
+                            <li>Elevate attitudes and have fun: ${data.feedback["Elevate attitudes and have fun."]}</li>
+                            <li>Support one another generously: ${data.feedback["Support one another generously."]}</li>
                             <li>Get It: ${data.feedback["Get It"]}</li>
                             <li>Want It: ${data.feedback["Want It"]}</li>
-                            <li>Capacity: ${data.feedback.Capacity}</li>
+                            <li>Capacity: ${data.feedback["Capacity"]}</li>
                         </ul>
                     </div>
                 </div>

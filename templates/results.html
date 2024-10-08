@@ -3,33 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Results</title>
+    <title>Results Overview</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Results</h1>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Participant</th>
-                    <th>Communicate</th>
-                    <th>Hustle</th>
-                    <!-- Add other headers as needed -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for participant, feedback in feedback_data.items() %}
-                <tr>
-                    <td>{{ participant }}</td>
-                    <td>{{ feedback['Communicate'] }}</td>
-                    <td>{{ feedback['Hustle'] }}</td>
-                    <!-- Add other feedback fields as needed -->
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a href="{{ url_for('export_results', session_id=session_id) }}" class="btn btn-primary">Export Results as CSV</a>
+        <h1>Feedback Results Overview</h1>
+        {% if feedback_data %}
+            {% for participant, feedback in feedback_data.items() %}
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ participant }}</h4>
+                        <ul>
+                            <li>Communicate clearly, professionally, and with kindness: {{ feedback['Communicate clearly, professionally, and with kindness.'] }}</li>
+                            <li>Hustle but don't rush: {{ feedback['Hustle but don\'t rush.'] }}</li>
+                            <li>Ownership over results: {{ feedback['Ownership over results.'] }}</li>
+                            <li>Improve everyday with enthusiasm: {{ feedback['Improve everyday with enthusiasm.'] }}</li>
+                            <li>Conscientious attention to detail: {{ feedback['Conscientious attention to detail.'] }}</li>
+                            <li>Elevate attitudes and have fun: {{ feedback['Elevate attitudes and have fun.'] }}</li>
+                            <li>Support one another generously: {{ feedback['Support one another generously.'] }}</li>
+                            <li>Get It: {{ feedback['Get It'] }}</li>
+                            <li>Want It: {{ feedback['Want It'] }}</li>
+                            <li>Capacity: {{ feedback['Capacity'] }}</li>
+                            <li><strong>Overall Score:</strong> {{ feedback['Overall Score'] }}</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No feedback available yet.</p>
+        {% endif %}
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>

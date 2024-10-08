@@ -3,38 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback for {{ participant }}</title>
+    <title>Peer Feedback Evaluation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Submit Feedback for {{ participant }}</h1>
-    <form method="POST">
-        <label>Communicate: </label>
-        <select name="communicate">
-            <option value="+">+</option>
-            <option value="+/-">+/-</option>
-            <option value="-">-</option>
-        </select><br><br>
+    <div class="container">
+        <h1>Peer Feedback Evaluation for {{ participant }}</h1>
+        <form action="{{ url_for('feedback_session', session_id=session_id, participant=participant) }}" method="POST">
+            <!-- Core Values Evaluation -->
+            <div class="form-group">
+                <h3>Core Values</h3>
+                {% for core_value in core_values %}
+                <div class="mb-3">
+                    <label><strong>{{ core_value }}</strong></label>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-success">
+                            <input type="radio" name="{{ core_value }}" value="+" autocomplete="off" required> +
+                        </label>
+                        <label class="btn btn-outline-warning">
+                            <input type="radio" name="{{ core_value }}" value="+/-" autocomplete="off" required> +/-
+                        </label>
+                        <label class="btn btn-outline-danger">
+                            <input type="radio" name="{{ core_value }}" value="-" autocomplete="off" required> -
+                        </label>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Additional Feedback Categories -->
+            <div class="form-group">
+                <h3>Get It, Want It, Capacity to Do It</h3>
+                <div class="mb-3">
+                    <label><strong>Get It</strong></label><br>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-success">
+                            <input type="radio" name="get_it" value="yes" autocomplete="off" required> Yes
+                        </label>
+                        <label class="btn btn-outline-danger">
+                            <input type="radio" name="get_it" value="no" autocomplete="off" required> No
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label><strong>Want It</strong></label><br>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-success">
+                            <input type="radio" name="want_it" value="yes" autocomplete="off" required> Yes
+                        </label>
+                        <label class="btn btn-outline-danger">
+                            <input type="radio" name="want_it" value="no" autocomplete="off" required> No
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label><strong>Capacity</strong></label><br>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-success">
+                            <input type="radio" name="capacity" value="yes" autocomplete="off" required> Yes
+                        </label>
+                        <label class="btn btn-outline-danger">
+                            <input type="radio" name="capacity" value="no" autocomplete="off" required> No
+                        </label>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Repeat for other core values -->
-        <label>Hustle: </label>
-        <select name="hustle">
-            <option value="+">+</option>
-            <option value="+/-">+/-</option>
-            <option value="-">-</option>
-        </select><br><br>
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Submit Feedback</button>
+        </form>
+    </div>
 
-        <!-- Add all the core value dropdowns -->
-
-        <label>Get It: </label>
-        <input type="checkbox" name="get_it"><br><br>
-        
-        <label>Want It: </label>
-        <input type="checkbox" name="want_it"><br><br>
-
-        <label>Capacity: </label>
-        <input type="checkbox" name="capacity"><br><br>
-
-        <button type="submit">Submit Feedback</button>
-    </form>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>

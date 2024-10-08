@@ -4,22 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <!-- Include Socket.IO Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Admin Dashboard</h1>
-    <form action="{{ url_for('add_participants') }}" method="POST">
-        <label for="participants">Participants (comma-separated names):</label><br>
-        <input type="text" name="participants" id="participants"><br><br>
-        <button type="submit">Add Participants</button>
-    </form>
-    <br>
-    <a href="{{ url_for('start_poll') }}">Start Poll</a>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <form action="{{ url_for('add_participants') }}" method="POST">
+            <label for="participants">Participants (comma-separated names):</label><br>
+            <input type="text" name="participants" id="participants" class="form-control"><br><br>
+            <button type="submit" class="btn btn-primary">Add Participants</button>
+        </form>
+        <br>
+        <a href="{{ url_for('start_poll') }}" class="btn btn-success">Start Poll</a>
 
-    <h2>Participants List:</h2>
-    <ul>
-        {% for participant in participants %}
-            <li>{{ participant }}</li>
-        {% endfor %}
-    </ul>
+        {% if session_link %}
+            <h2>Session Link for Participants</h2>
+            <p>Share this link with participants: <a href="{{ session_link }}" target="_blank">{{ session_link }}</a></p>
+        {% endif %}
+
+        <h2>Participants List:</h2>
+        <ul id="participant-list">
+            {% for participant in participants %}
+                <li>{{ participant }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Live Feedback Updates:</h2>
+        <div id="live-feedback"></div>
+
+        {% if session_id %}
+            <br>
+            <a href="{{ url_for('export_results', session_id=session_id) }}" class="btn btn-primary">Export Results as CSV</a>
+        {% endif %}
+    </div>
+
+    <!-- JavaScript to Handle Real-Time Updates -->
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Listen for a successful connection to the server
+        socket.on('connect', function() {
+            console.log("Connected to the server");
+            // Join the admin room to receive updates
+            var session_id = "{{ request.args.get('session_id') }}";
+            if (session_id) {
+                socket.emit('join', {room: session_id, username: 'Admin'});
+            }
+        });
+
+        // Listen for new feedback submissions
+        socket.on('new_feedback', function(data) {
+            // Display new feedback in the 'live-feedback' div
+            var feedbackDiv = document.getElementById('live-feedback');
+            var feedbackHtml = `
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Feedback for ${data.participant}</h5>
+                        <ul>
+                            <li>Communicate: ${data.feedback.Communicate}</li>
+                            <li>Hustle: ${data.feedback.Hustle}</li>
+                            <li>Ownership: ${data.feedback.Ownership}</li>
+                            <li>Improve: ${data.feedback.Improve}</li>
+                            <li>Conscientious: ${data.feedback.Conscientious}</li>
+                            <li>Attitudes: ${data.feedback.Attitudes}</li>
+                            <li>Support: ${data.feedback.Support}</li>
+                            <li>Get It: ${data.feedback["Get It"]}</li>
+                            <li>Want It: ${data.feedback["Want It"]}</li>
+                            <li>Capacity: ${data.feedback.Capacity}</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            feedbackDiv.insertAdjacentHTML('beforeend', feedbackHtml);
+        });
+    </script>
 </body>
 </html>
